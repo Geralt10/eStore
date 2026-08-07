@@ -26,7 +26,7 @@ async function sendTokenResponse(user,res,message) {
 }
 
 export async function registerController(req,res){
-    const {email,password,fullname,contact}= req.body;
+    const {email,password,fullname,contact,isSeller}= req.body;
 
     try {
         
@@ -42,7 +42,8 @@ export async function registerController(req,res){
             email,
             password,
             fullname,
-            contact
+            contact,
+            role: isSeller ? "seller" : "buyer"
         })
 
         await sendTokenResponse(user,res,"user register successfully");
