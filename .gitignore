@@ -1,0 +1,50 @@
+# Node dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Runtime directories
+dist/
+build/
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Frontend/npm artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Backend artifacts
+backend/node_modules/
+backend/.env
+backend/dist/
+backend/build/
+backend/coverage/
+
+# Editor directories and files
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.pssproj
+
+# Misc
+*.bak
+*.tmp
+*.swp
