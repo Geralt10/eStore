@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { authorize } from "../middlewares/auth.middleware.js";
-import { createProduct } from "../controllers/product.controller.js";
+import { createProduct, getSellerProduct } from "../controllers/product.controller.js";
 import multer from "multer";
+import { createProductValidator } from "../validators/product.validator.js";
 
 const upload = multer({storage:multer.memoryStorage(),
     limits:{
@@ -12,6 +13,8 @@ const upload = multer({storage:multer.memoryStorage(),
 
 const productRouter = Router();
 
-productRouter.post("/create",authorize,upload.array("images",7),createProduct);
+productRouter.post("/create",authorize,createProductValidator,upload.array("images",7),createProduct);
+
+productRouter.get("/seller",authorize,getSellerProduct);
 
 export default productRouter;
