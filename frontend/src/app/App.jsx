@@ -9,16 +9,17 @@ function App() {
         position="top-right"
         toastOptions={{
           style: {
-            background: "#161616",
-            color: "#f5f5f5",
-            border: "1px solid rgba(234, 179, 8, 0.3)",
+            background: "#ffffff",
+            color: "#0f172a",
+            border: "1px solid #e2e8f0",
+            boxShadow: "0 10px 30px -5px rgba(0, 0, 0, 0.08)",
             fontSize: "13px",
             borderRadius: "10px",
           },
           success: {
             iconTheme: {
-              primary: "#EAB308",
-              secondary: "#161616",
+              primary: "#0f172a",
+              secondary: "#ffffff",
             },
           },
         }}

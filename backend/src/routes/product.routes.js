@@ -13,7 +13,7 @@ const upload = multer({storage:multer.memoryStorage(),
 
 const productRouter = Router();
 
-productRouter.post("/create",authorize,createProductValidator,upload.array("images",7),createProduct);
+productRouter.post("/create",authorize,upload.array("images",7),createProductValidator,createProduct);
 
 productRouter.get("/seller",authorize,getSellerProduct);
 
