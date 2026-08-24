@@ -73,23 +73,23 @@ const Register = () => {
         <div className="flex border-b border-slate-200 mb-4">
           <Link
             to="/login"
-            className="flex-1 py-2 text-center text-sm font-semibold text-slate-400 hover:text-slate-700 transition-colors"
+            className="flex-1 py-2 text-center text-sm font-medium text-slate-400 hover:text-slate-700 transition-colors"
           >
             Login
           </Link>
 
           <Link
             to="/register"
-            className="flex-1 py-2 text-center text-sm font-bold text-black relative"
+            className="flex-1 py-2 text-center text-sm font-semibold text-black relative"
           >
             Register
-            <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-black rounded-full" />
+            <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-black rounded-full" />
           </Link>
         </div>
 
         {/* Header */}
         <div className="text-center mb-4">
-          <h3 className="text-xl font-black text-slate-900 tracking-tight">
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
             Create an account
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -227,7 +227,7 @@ const Register = () => {
             <div>
               <label
                 htmlFor="isSeller"
-                className="text-xs font-semibold cursor-pointer text-slate-900 block"
+                className="text-xs font-medium cursor-pointer text-slate-900 block"
               >
                 Register as a Seller
               </label>
@@ -253,7 +253,7 @@ const Register = () => {
           {/* Register Button */}
           <button
             type="submit"
-            className="w-full py-2.5 rounded-xl bg-black hover:bg-zinc-800 text-white text-sm font-bold tracking-wide transition-all shadow-md active:scale-[0.99]"
+            className="w-full py-2.5 rounded-xl bg-black hover:bg-zinc-800 text-white text-sm font-medium tracking-wide transition-all shadow-md active:scale-[0.99]"
           >
             Create Account
           </button>
@@ -272,7 +272,7 @@ const Register = () => {
         {/* Google Sign In */}
         <a
           href="/api/auth/google"
-          className="flex items-center justify-center gap-2 py-2 px-3 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-sm w-full"
+          className="flex items-center justify-center gap-2 py-2 px-3 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-medium text-slate-700 transition-colors shadow-sm w-full"
         >
           <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -289,7 +289,7 @@ const Register = () => {
             Already have an account?{" "}
             <Link
               to="/login"
-              className="font-bold text-black hover:underline"
+              className="font-semibold text-black hover:underline"
             >
               Login
             </Link>

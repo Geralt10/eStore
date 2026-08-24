@@ -55,15 +55,15 @@ const Login = () => {
         <div className="flex border-b border-slate-200 mb-5">
           <Link
             to="/login"
-            className="flex-1 py-2 text-center text-sm font-bold text-black relative"
+            className="flex-1 py-2 text-center text-sm font-semibold text-black relative"
           >
             Login
-            <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-black rounded-full" />
+            <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-black rounded-full" />
           </Link>
 
           <Link
             to="/register"
-            className="flex-1 py-2 text-center text-sm font-semibold text-slate-400 hover:text-slate-700 transition-colors"
+            className="flex-1 py-2 text-center text-sm font-medium text-slate-400 hover:text-slate-700 transition-colors"
           >
             Register
           </Link>
@@ -71,7 +71,7 @@ const Login = () => {
 
         {/* Header */}
         <div className="text-center mb-5">
-          <h3 className="text-xl font-black text-slate-900 tracking-tight">
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
             Welcome back!
           </h3>
           <p className="text-xs text-slate-500 mt-1">
@@ -144,7 +144,7 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full py-2.5 rounded-xl bg-black hover:bg-zinc-800 text-white text-sm font-bold tracking-wide transition-all shadow-md active:scale-[0.99]"
+            className="w-full py-2.5 rounded-xl bg-black hover:bg-zinc-800 text-white text-sm font-medium tracking-wide transition-all shadow-md active:scale-[0.99]"
           >
             Login
           </button>
@@ -163,7 +163,7 @@ const Login = () => {
         {/* Google Sign In */}
         <a
           href="/api/auth/google"
-          className="flex items-center justify-center gap-2 py-2.5 px-3 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-sm w-full"
+          className="flex items-center justify-center gap-2 py-2.5 px-3 border border-slate-200 rounded-xl hover:bg-slate-50 text-xs font-medium text-slate-700 transition-colors shadow-sm w-full"
         >
           <svg className="w-4 h-4 shrink-0" viewBox="0 0 48 48">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -180,7 +180,7 @@ const Login = () => {
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="font-bold text-black hover:underline"
+              className="font-semibold text-black hover:underline"
             >
               Register
             </Link>

@@ -26,11 +26,9 @@ export function useProduct() {
             dispatch(setError(null));
             const data = await getSellerProduct();
             dispatch(setSellerProduct(data.products));
-            return data.products;
         } catch (error) {
             const errorMsg = error.response?.data?.message || error.message || "Failed to fetch products";
             dispatch(setError(errorMsg));
-            return null;
         } finally {
             dispatch(setLoading(false));
         }
