@@ -1,8 +1,18 @@
 import { RouterProvider } from "react-router";
 import { routes } from "./app.routes";
 import { Toaster } from "react-hot-toast";
+import { useAuth } from "../features/auth/hooks/useAuth";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { handleGetMe } = useAuth();
+  useEffect(() => {
+    handleGetMe();
+  }, []);
+
+  const user = useSelector((state)=>state.auth.user)
+  console.log(user);
   return (
     <>
       <Toaster

@@ -22,3 +22,12 @@ export const login = async ({email,password}) => {
         throw error
     }
 }
+
+export const  getMe = async() => {
+    try {
+        const response = await api.get("/me");
+        return response.data;
+    } catch (error) {
+        throw error
+    }
+}

@@ -93,3 +93,23 @@ export async function googleCallbackController(req, res) {
     res.redirect("http://localhost:5173/");    
        
 }   
+
+export async function getMeController(req,res) {
+    try {
+        const user = req.user;
+       
+        res.status(200).json({
+            message:"User fetched successfully",
+            user:{
+                id:user._id,
+                email:user.email,
+                contact:user.contact,
+                fullname:user.fullname,
+                role:user.role
+            }
+        })
+    } catch (error) {
+        console.error("Get Me Controller Error:",error);
+        res.status(500).json({message:error.message || "Server Error"});
+    }
+}

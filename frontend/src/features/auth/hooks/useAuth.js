@@ -1,4 +1,4 @@
-import { register, login } from "../service/auth.api";
+import { register, login,getMe } from "../service/auth.api";
 import { useDispatch } from "react-redux";
 import { setError, setLoading, setUser } from "../state/auth.slice";
 import toast from "react-hot-toast";
@@ -23,7 +23,7 @@ export const useAuth = () => {
         } finally {
             dispatch(setLoading(false));
         }
-    };
+    };  
 
     const handleLogin = async({email,password}) => {
         try {
@@ -32,7 +32,7 @@ export const useAuth = () => {
             dispatch(setUser(response.user));
             dispatch(setError(null));
             toast.success("Login successful!");
-            return true;
+            return response.user;
         } catch (error) {
             const errorMsg = error.response?.data?.message || error.message || "Login failed";
             dispatch(setError(errorMsg));
@@ -44,8 +44,24 @@ export const useAuth = () => {
         }
     }
 
+    const handleGetMe = async() => {
+        try {
+            dispatch(setLoading(true));
+            dispatch(setError(null));
+            const response = await getMe();
+            dispatch(setUser(response.user));
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message || "Failed to fetch user";
+            dispatch(setError(errorMsg));
+            dispatch(setUser(null));
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+
     return {
         handleRegister,
-        handleLogin
+        handleLogin,
+        handleGetMe
     }
 }
