@@ -54,3 +54,38 @@ export async function getSellerProduct(req,res){
         res.status(500).json({message:error.message});
     }
 }
+
+export async function getAllProducts(req,res){
+    try {
+
+        const products = await productModel.find();
+
+        return res.status(200).json({
+            success:true,
+            message:"Product fetched successfully",
+            products,
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message});
+    }
+}
+
+export async function getProduct(req,res) {
+    try {
+        const {id} = req.params;
+
+        const product = await productModel.findById(id);
+
+        return res.status(200).json({
+            success:true,
+            message:"Product fetched successfully",
+            product,
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message});
+    }
+}

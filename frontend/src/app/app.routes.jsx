@@ -4,23 +4,13 @@ import Login from "../features/auth/pages/Login";
 import CreateProduct from "../features/products/pages/CreateProduct";
 import Dashboard from "../features/products/pages/Dashboard";
 import Protected from "../features/auth/components/Protected";
-
-const Layout = () => {
-    return (
-        <div className="min-h-screen relative">
-            {/* Home Page Content */}
-            <h1>hello</h1>
-
-            {/* Modal Overlay for /login and /register */}
-            <Outlet />
-        </div>
-    );
-};
+import Home from "../features/products/pages/Home";
+import ProductDetail from "../features/products/pages/ProductDetail";
 
 export const routes = createBrowserRouter([
     {
         path: "/",
-        element: <Layout />,
+        element: <Home />,
         children: [
             {
                 path: "register",
@@ -31,6 +21,10 @@ export const routes = createBrowserRouter([
                 element: <Login />
             }
         ]
+    },
+    {
+        path: "/product/:id",
+        element: <ProductDetail />
     },
     {
         path: "/seller",

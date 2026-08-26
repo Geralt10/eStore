@@ -23,11 +23,20 @@ export const login = async ({email,password}) => {
     }
 }
 
-export const  getMe = async() => {
+export const getMe = async() => {
     try {
         const response = await api.get("/me");
         return response.data;
     } catch (error) {
-        throw error
+        throw error;
     }
-}
+};
+
+export const logout = async () => {
+    try {
+        const response = await api.post("/logout");
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

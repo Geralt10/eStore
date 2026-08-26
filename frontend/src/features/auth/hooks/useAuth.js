@@ -1,4 +1,4 @@
-import { register, login,getMe } from "../service/auth.api";
+import { register, login, getMe, logout } from "../service/auth.api";
 import { useDispatch } from "react-redux";
 import { setError, setLoading, setUser } from "../state/auth.slice";
 import toast from "react-hot-toast";
@@ -59,9 +59,27 @@ export const useAuth = () => {
         }
     }
 
+    const handleLogout = async () => {
+        try {
+            dispatch(setLoading(true));
+            await logout();
+            dispatch(setUser(null));
+            dispatch(setError(null));
+            toast.success("Logged out successfully");
+            return true;
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message || "Logout failed";
+            toast.error(errorMsg);
+            return false;
+        } finally {
+            dispatch(setLoading(false));
+        }
+    };
+
     return {
         handleRegister,
         handleLogin,
-        handleGetMe
+        handleGetMe,
+        handleLogout
     }
-}
+}

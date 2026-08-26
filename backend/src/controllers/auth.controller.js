@@ -107,9 +107,23 @@ export async function getMeController(req,res) {
                 fullname:user.fullname,
                 role:user.role
             }
-        })
+        });
     } catch (error) {
-        console.error("Get Me Controller Error:",error);
-        res.status(500).json({message:error.message || "Server Error"});
+        console.error("Get Me Controller Error:", error);
+        res.status(500).json({ message: error.message || "Server Error" });
     }
 }
+
+export async function logoutController(req, res) {
+    try {
+        res.clearCookie("token");
+        res.status(200).json({
+            success: true,
+            message: "User logged out successfully"
+        });
+    } catch (error) {
+        console.error("Logout Controller Error:", error);
+        res.status(500).json({ message: error.message || "Server Error" });
+    }
+}
+

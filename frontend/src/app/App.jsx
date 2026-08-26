@@ -12,7 +12,7 @@ function App() {
   }, []);
 
   const user = useSelector((state)=>state.auth.user)
-  console.log(user);
+  
   return (
     <>
       <Toaster

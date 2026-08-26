@@ -1,6 +1,6 @@
-import { createProduct, getSellerProduct } from "../services/product.api";
+import { createProduct, getSellerProduct, getAllProducts, getProductById } from "../services/product.api";
 import { useDispatch } from "react-redux";
-import { setSellerProduct, setLoading, setError } from "../state/product.slice";
+import { setAllProducts, setSellerProduct, setLoading, setError } from "../state/product.slice";
 
 export function useProduct() {
     const dispatch = useDispatch();
@@ -20,6 +20,20 @@ export function useProduct() {
         }
     }
 
+    async function handleGetAllProducts() {
+        try {
+            dispatch(setLoading(true));
+            dispatch(setError(null));
+            const data = await getAllProducts();
+            dispatch(setAllProducts(data.products));
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message || "Failed to fetch products";
+            dispatch(setError(errorMsg));
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+
     async function handleGetSellerProduct() {
         try {
             dispatch(setLoading(true));
@@ -34,8 +48,25 @@ export function useProduct() {
         }
     }
 
+    async function handleGetProduct(id) {
+        try {
+            dispatch(setLoading(true));
+            dispatch(setError(null));
+            const data = await getProductById(id);
+            return data.product;
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message || "Failed to fetch product";
+            dispatch(setError(errorMsg));
+            return null;
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+
     return {
         handleCreateProduct,
-        handleGetSellerProduct
+        handleGetAllProducts,
+        handleGetSellerProduct,
+        handleGetProduct
     };
-}
+}
