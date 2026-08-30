@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Link, Outlet } from "react-router";
+import { Outlet } from "react-router";
 import { useSelector } from "react-redux";
 import { useProduct } from "../hooks/useProduct";
 import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const { handleGetAllProducts } = useProduct();
@@ -13,21 +14,6 @@ export default function Home() {
   useEffect(() => {
     handleGetAllProducts();
   }, []);
-
-  const formatPrice = (priceObj) => {
-    if (!priceObj) return "₹0";
-    const amount = priceObj.amount ?? 0;
-    const currency = priceObj.currency || "INR";
-    const symbols = {
-      INR: "₹",
-      USD: "$",
-      EUR: "€",
-      GBP: "£",
-      JPY: "¥",
-    };
-    const symbol = symbols[currency] || `${currency} `;
-    return `${symbol}${amount.toLocaleString()}`;
-  };
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans text-slate-900">
@@ -79,46 +65,9 @@ export default function Home() {
         ) : (
           /* Modern Apparel Grid */
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {allProducts.map((product) => {
-              const primaryImage = product.image?.[0]?.url || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&auto=format&fit=crop&q=80";
-              return (
-                <Link
-                  key={product._id}
-                  to={`/product/${product._id}`}
-                  className="group flex flex-col bg-white rounded-2xl p-2.5 border border-slate-200/70 hover:border-slate-300 hover:shadow-sm transition-all duration-200"
-                >
-                  {/* Photo Container */}
-                  <div className="relative w-full aspect-[3/4] rounded-xl bg-slate-100 overflow-hidden mb-3">
-                    <img
-                      src={primaryImage}
-                      alt={product.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                    />
-                    {product.image?.length > 1 && (
-                      <span className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md">
-                        +{product.image.length - 1}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="px-1 pb-1 space-y-1">
-                    <h2 className="text-xs sm:text-sm font-semibold text-slate-800 line-clamp-1 group-hover:text-blue-600 transition-colors">
-                      {product.title}
-                    </h2>
-                    <div className="flex items-center justify-between pt-0.5">
-                      <span className="text-xs sm:text-sm font-bold text-slate-900">
-                        {formatPrice(product.price)}
-                      </span>
-                      <span className="text-[11px] font-semibold text-slate-400 group-hover:text-slate-900 transition-colors">
-                        View &rarr;
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+            {allProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
           </div>
         )}
       </main>

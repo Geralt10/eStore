@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useProduct } from "../hooks/useProduct";
 import { useProductFilter } from "../hooks/useProductFilter";
 import SellerProductCard from "../components/SellerProductCard";
@@ -17,6 +17,7 @@ const CURRENCY_SYMBOLS = {
 export default function Dashboard() {
   const products = useSelector((state) => state.product.sellerProduct || []);
   const loading = useSelector((state) => state.product.loading);
+  const navigate = useNavigate();
   const { handleGetSellerProduct } = useProduct();
 
   const {
@@ -154,15 +155,20 @@ export default function Dashboard() {
 
         {/* Product Cards (Grid Mode) */}
         {!loading && filteredProducts.length > 0 && viewMode === "grid" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-1">
-            {filteredProducts.map((product) => (
-              <SellerProductCard
-                key={product._id || product.id}
-                product={product}
-                badgeText="Live"
-                footerText="Manage"
-              />
-            ))}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-1">
+            {filteredProducts.map((product) => {
+              const productId = product._id || product.id;
+              return (
+                <SellerProductCard
+                  key={productId}
+                  product={product}
+                  badgeText="Live"
+                  footerText="Manage"
+                  onFooterClick={() => navigate(`/seller/product/${productId}`)}
+                />
+              );
+            })}
           </div>
         )}
 
@@ -180,7 +186,8 @@ export default function Dashboard() {
                 return (
                   <div
                     key={productId}
-                    className="p-4 sm:p-5 flex items-center justify-between gap-4 hover:bg-slate-50/70 transition-colors"
+                    onClick={() => navigate(`/seller/product/${productId}`)}
+                    className="p-4 sm:p-5 flex items-center justify-between gap-4 hover:bg-slate-50/70 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-4 min-w-0">
                       {/* Thumbnail */}
@@ -235,8 +242,8 @@ export default function Dashboard() {
                       <div className="text-base font-bold text-slate-900">
                         {currencySymbol} {Number(product.price?.amount || 0).toLocaleString()}
                       </div>
-                      <span className="text-xs text-slate-500 font-medium hover:text-slate-900 inline-block mt-1">
-                        Edit &rarr;
+                      <span className="text-xs text-slate-700 font-semibold hover:text-slate-950 inline-flex items-center gap-1 mt-1">
+                        Manage &rarr;
                       </span>
                     </div>
                   </div>

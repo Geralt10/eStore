@@ -43,4 +43,26 @@ export async function getProductById(id){
         console.log(error);
         throw error;
     }
-}
+}
+
+export async function createVariant(productId, formData) {
+    try {
+        const response = await api.post(`/product/${productId}/variant`, formData);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export async function updateVariantStock(productId, variantId, stock) {
+    try {
+        const response = await api.patch(`/product/${productId}/variant/${variantId}/stock`, { stock });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+
