@@ -26,10 +26,10 @@ export default function Home() {
         {/* Top Header Row */}
         <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200/80">
           <div>
-            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal tracking-tight text-slate-900">
               New Arrivals
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-[11px] uppercase tracking-widest text-slate-400 mt-1">
               {allProducts.length} {allProducts.length === 1 ? "item" : "items"}
             </p>
           </div>

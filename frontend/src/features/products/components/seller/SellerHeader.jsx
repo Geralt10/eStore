@@ -8,7 +8,7 @@ export default function SellerHeader({ product }) {
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 min-w-0 text-sm">
-          <Link to="/seller/dashboard" className="font-bold text-slate-900 hover:opacity-70 transition-opacity shrink-0">
+          <Link to="/seller/dashboard" className="font-serif text-lg font-semibold text-slate-900 hover:opacity-70 transition-opacity shrink-0">
             eStore
           </Link>
           <span className="text-slate-300 hidden sm:block">›</span>

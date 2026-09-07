@@ -194,7 +194,7 @@ export default function CreateProduct() {
           <div className="lg:col-span-7 space-y-7">
             {/* Page Title */}
             <div>
-              <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">
+              <h1 className="font-serif text-3xl sm:text-4xl font-normal text-slate-900 tracking-tight">
                 Add new product
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-1">

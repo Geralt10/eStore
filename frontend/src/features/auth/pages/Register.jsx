@@ -89,7 +89,7 @@ const Register = () => {
 
         {/* Header */}
         <div className="text-center mb-4">
-          <h3 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
+          <h3 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
             Create an account
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">

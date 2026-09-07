@@ -27,8 +27,8 @@ export default function Navbar() {
           
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <span className="text-xl font-extrabold tracking-tight text-slate-950 uppercase">
-              e<span className="text-slate-500 font-normal">Store</span>
+            <span className="font-serif text-2xl tracking-tight text-slate-950 font-normal">
+              e<span className="text-slate-500 italic">Store</span>
             </span>
           </Link>
 

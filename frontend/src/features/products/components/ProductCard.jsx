@@ -190,14 +190,14 @@ export default function ProductCard({ product }) {
 
       {/* Card Content */}
       <div className="px-1 pb-1 space-y-1">
-        <h2 className="text-xs sm:text-sm font-semibold text-slate-800 line-clamp-1 group-hover:text-blue-600 transition-colors">
+        <h2 className="font-serif text-sm sm:text-base font-normal text-slate-900 line-clamp-1 group-hover:text-slate-700 transition-colors">
           {product.title}
         </h2>
         <div className="flex items-center justify-between pt-0.5">
-          <span className="text-xs sm:text-sm font-bold text-slate-900">
+          <span className="text-xs font-semibold tracking-wider text-slate-800 uppercase">
             {formatPrice(product.price)}
           </span>
-          <span className="text-[11px] font-semibold text-slate-400 group-hover:text-slate-900 transition-colors">
+          <span className="text-[10px] font-semibold tracking-widest uppercase text-slate-400 group-hover:text-slate-900 transition-colors">
             View &rarr;
           </span>
         </div>

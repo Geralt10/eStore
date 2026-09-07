@@ -246,7 +246,7 @@ export default function SellerProductCard({
       <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
         <div>
           <div className="flex items-baseline justify-between gap-2">
-            <h4 className="text-sm font-semibold text-slate-900 line-clamp-1 group-hover:text-black transition-colors">
+            <h4 className="font-serif text-base font-normal text-slate-900 line-clamp-1 group-hover:text-black transition-colors">
               {title}
             </h4>
             <span className="text-base font-semibold text-slate-900 shrink-0">

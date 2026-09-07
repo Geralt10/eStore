@@ -14,10 +14,10 @@ export default function DashboardFilterBar({
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
       {/* Title & Count */}
       <div className="flex items-center gap-3">
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+        <h1 className="font-serif text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
           Products
         </h1>
-        <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+        <span className="text-[10px] font-semibold tracking-widest uppercase text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
           {totalCount} {totalCount === 1 ? "item" : "items"}
         </span>
       </div>

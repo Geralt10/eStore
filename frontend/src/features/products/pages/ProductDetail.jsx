@@ -3,21 +3,23 @@ import { useParams, Link, useNavigate } from "react-router";
 import { useProduct } from "../hooks/useProduct";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
+import { useCart } from "../../cart/hook/useCart";
 
-const CURRENCY_SYMBOLS = { INR: "₹", USD: "$", EUR: "€", GBP: "£", JPY: "¥" };
+const CURRENCY_SYMBOLS = { INR: "INR ", USD: "$", EUR: "€", GBP: "£", JPY: "¥" };
 
 function formatPrice(priceObj) {
-  if (!priceObj) return "₹0";
+  if (!priceObj) return "INR 0";
   const amount = priceObj.amount ?? priceObj ?? 0;
   const currency = priceObj.currency || "INR";
-  const symbol = CURRENCY_SYMBOLS[currency] || currency;
-  return `${symbol}${Number(amount).toLocaleString()}`;
+  const prefix = CURRENCY_SYMBOLS[currency] || `${currency} `;
+  return `${prefix}${Number(amount).toLocaleString()}`;
 }
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { handleGetProduct } = useProduct();
+  const { handleAddToCart: addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -180,7 +182,7 @@ export default function ProductDetail() {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (hasVariants && !selectedVariant) {
       toast.error("Please select a valid variant");
       return;
@@ -189,8 +191,18 @@ export default function ProductDetail() {
       toast.error("This variant is out of stock");
       return;
     }
-    const attrLabel = Object.values(selectedAttrs).join(" / ");
-    toast.success(`${product?.title}${attrLabel ? ` (${attrLabel})` : ""} added to cart!`);
+    try {
+      await addToCart({
+        productId: product?._id || id,
+        variantId: selectedVariant?._id,
+        quantity: 1,
+      });
+      const attrLabel = Object.values(selectedAttrs).join(" / ");
+      toast.success(`${product?.title}${attrLabel ? ` (${attrLabel})` : ""} added to cart!`);
+    } catch (error) {
+      const msg = error?.response?.data?.message || "Failed to add product to cart";
+      toast.error(msg);
+    }
   };
 
   const handleBuyNow = () => {
@@ -366,30 +378,35 @@ export default function ProductDetail() {
               </div>
 
               {/* Right: Details */}
-              <div className="md:col-span-6 flex flex-col space-y-4">
+              <div className="md:col-span-6 flex flex-col space-y-5 lg:pl-4">
 
                 {/* Title & Price */}
-                <div>
-                  <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                <div className="space-y-2">
+                  <h1 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-normal text-slate-900 tracking-tight leading-[1.15]">
                     {product.title}
                   </h1>
-                  <p className="text-xl font-black text-slate-900 mt-1">{displayPrice}</p>
+                  <p className="text-xs sm:text-sm font-semibold tracking-[0.18em] text-slate-800 uppercase">
+                    {displayPrice}
+                  </p>
                 </div>
 
                 {/* Variant Attribute Selectors */}
                 {hasVariants && Object.entries(attrOptions).map(([key, values]) => {
                   const selectedVal = selectedAttrs[key];
                   return (
-                    <div key={key}>
-                      <span className="text-xs font-semibold text-slate-700 block mb-1.5 capitalize">
-                        {key}
+                    <div key={key} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-semibold tracking-[0.2em] text-slate-400 uppercase">
+                          {key}
+                        </span>
                         {selectedVal && (
-                          <span className="ml-1.5 font-bold text-slate-900">{selectedVal}</span>
+                          <span className="text-[11px] font-semibold tracking-wider text-slate-900 uppercase">
+                            {selectedVal}
+                          </span>
                         )}
-                      </span>
+                      </div>
                       <div className="flex items-center gap-2 flex-wrap">
                         {values.map((val) => {
-                          // Check if this value is available (any variant matching current + this val has stock)
                           const isAvailable = variants.some((v) => {
                             const attrs = v.attributes instanceof Map
                               ? Object.fromEntries(v.attributes)
@@ -397,15 +414,17 @@ export default function ProductDetail() {
                             return String(attrs[key]) === val && Number(v.stock) > 0;
                           });
 
+                          const isSelected = selectedVal === val;
+
                           return (
                             <button
                               key={val}
                               type="button"
                               onClick={() => handleAttrSelect(key, val)}
                               disabled={!isAvailable}
-                              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
-                                selectedVal === val
-                                  ? "bg-slate-900 text-white border-slate-900"
+                              className={`px-4 py-2 text-[11px] font-semibold tracking-[0.14em] uppercase transition-all cursor-pointer border rounded-xs ${
+                                isSelected
+                                  ? "bg-[#2b333e] text-white border-[#2b333e] shadow-xs"
                                   : isAvailable
                                   ? "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
                                   : "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed line-through"
@@ -422,41 +441,61 @@ export default function ProductDetail() {
 
                 {/* Stock status */}
                 {hasVariants && (
-                  <div>
+                  <div className="pt-1">
                     {stockCount > 10 ? (
-                      <span className="text-xs text-emerald-600 font-semibold">✓ In stock ({stockCount} available)</span>
+                      <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-emerald-600">
+                        {stockCount} in stock
+                      </span>
                     ) : stockCount > 0 ? (
-                      <span className="text-xs text-amber-600 font-semibold">⚠ Only {stockCount} left!</span>
+                      <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-amber-600">
+                        Only {stockCount} left in stock
+                      </span>
                     ) : (
-                      <span className="text-xs text-red-600 font-semibold">✕ Out of stock</span>
+                      <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-red-500">
+                        Out of stock
+                      </span>
                     )}
                   </div>
                 )}
 
-                {/* Description */}
-                <div>
-                  <span className="text-xs font-semibold text-slate-700 block mb-1">About</span>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-4">
+                {/* Description / Details */}
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[10px] font-semibold tracking-[0.2em] text-slate-400 uppercase block">
+                    Tag / Details
+                  </span>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                     {product.description}
                   </p>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="pt-1 flex flex-col sm:flex-row gap-2.5">
+                <div className="pt-3 flex flex-col gap-2.5">
                   <button
                     onClick={handleAddToCart}
                     disabled={stockCount === 0}
-                    className="w-full sm:flex-1 py-2.5 px-4 rounded-xl font-semibold text-xs bg-white text-slate-900 border border-slate-300 hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-full py-3.5 px-6 text-xs font-semibold tracking-[0.22em] uppercase bg-[#2b333e] hover:bg-black text-white transition-all shadow-xs cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     Add to Cart
                   </button>
                   <button
                     onClick={handleBuyNow}
                     disabled={stockCount === 0}
-                    className="w-full sm:flex-1 py-2.5 px-4 rounded-xl font-semibold text-xs bg-slate-900 hover:bg-black text-white transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-full py-3.5 px-6 text-xs font-semibold tracking-[0.22em] uppercase bg-transparent hover:bg-slate-100 text-slate-900 border border-slate-200 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     Buy Now
                   </button>
+                </div>
+
+                {/* Editorial Shipping & Delivery Info */}
+                <div className="pt-4 mt-2 border-t border-slate-100 space-y-2 text-[10px] tracking-[0.15em] text-slate-400 uppercase">
+                  <div className="flex items-center justify-between">
+                    <span>Shipping</span>
+                    <span className="text-slate-600 font-medium">Complimentary over INR 10,000</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Returns</span>
+                    <span className="text-slate-600 font-medium">Within 14 days of delivery</span>
+                  </div>
                 </div>
               </div>
 
