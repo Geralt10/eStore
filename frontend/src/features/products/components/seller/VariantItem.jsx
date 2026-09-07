@@ -26,31 +26,31 @@ export default function VariantItem({
 
   const stockBadge =
     stock > 10 ? (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-semibold">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-normal">
         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         {stock} in stock
       </span>
     ) : stock > 0 ? (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 text-[11px] font-semibold">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[11px] font-normal">
         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
         {stock} low stock
       </span>
     ) : (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 text-red-600 text-[11px] font-semibold">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-red-600 text-[11px] font-normal">
         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
         0 out of stock
       </span>
     );
 
   return (
-    <div className="grid grid-cols-12 items-center px-4 py-3 hover:bg-slate-50/60 transition-colors">
+    <div className="grid grid-cols-12 items-center px-5 py-3 hover:bg-slate-50/50 transition-colors">
       {/* Variant info */}
-      <div className="col-span-5 flex items-center gap-2.5 min-w-0">
-        <div className="w-9 h-9 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+      <div className="col-span-5 flex items-center gap-3 min-w-0">
+        <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-100 shrink-0">
           <img src={variantImg} alt="Variant" className="w-full h-full object-cover" />
         </div>
         <div className="min-w-0">
-          <div className="text-xs font-semibold text-slate-900 truncate">
+          <div className="text-xs font-normal text-slate-900 truncate">
             {Object.values(attrs).length > 0 ? Object.values(attrs).join(" / ") : `Variant #${index + 1}`}
           </div>
           <div className="text-[9px] font-mono text-slate-400 mt-0.5">
@@ -59,7 +59,7 @@ export default function VariantItem({
           {Object.entries(attrs).length > 0 && (
             <div className="flex flex-wrap gap-1 mt-0.5">
               {Object.entries(attrs).map(([k, v]) => (
-                <span key={k} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[9px] border border-slate-200">
+                <span key={k} className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[9px] font-normal">
                   <span className="text-slate-400 capitalize">{k}:</span> {String(v)}
                 </span>
               ))}
@@ -69,7 +69,7 @@ export default function VariantItem({
       </div>
 
       {/* Price */}
-      <div className="col-span-3 text-xs font-semibold text-slate-900 hidden sm:block">
+      <div className="col-span-3 text-xs font-normal text-slate-900 hidden sm:block">
         {symbol} {Number(vPrice).toLocaleString()}
       </div>
 

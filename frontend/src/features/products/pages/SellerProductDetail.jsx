@@ -63,39 +63,40 @@ export default function SellerProductDetail() {
     <div className="min-h-screen bg-[#fafbfc] pb-24">
       <SellerHeader product={product} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 space-y-5">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-5 space-y-4">
         {loading ? (
           /* Skeleton */
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 animate-pulse">
-            <div className="lg:col-span-5 space-y-3">
-              <div className="aspect-square rounded-2xl bg-slate-100 w-full" />
-              <div className="grid grid-cols-4 gap-2">
-                {[...Array(4)].map((_, i) => <div key={i} className="aspect-square rounded-lg bg-slate-100" />)}
+          <div className="bg-white rounded-2xl p-4 sm:p-5 grid grid-cols-1 md:grid-cols-12 gap-5 animate-pulse shadow-xs">
+            <div className="md:col-span-5 flex flex-col-reverse sm:flex-row gap-2.5 w-full">
+              <div className="flex flex-row sm:flex-col gap-1.5 w-full sm:w-12 shrink-0 overflow-hidden">
+                <div className="w-12 h-14 sm:h-15 bg-slate-100 rounded-lg shrink-0" />
+                <div className="w-12 h-14 sm:h-15 bg-slate-100 rounded-lg shrink-0" />
+                <div className="w-12 h-14 sm:h-15 bg-slate-100 rounded-lg shrink-0" />
               </div>
+              <div className="w-full aspect-square sm:aspect-square sm:max-h-[290px] rounded-xl bg-slate-100" />
             </div>
-            <div className="lg:col-span-7 space-y-4 pt-2">
-              <div className="h-4 rounded bg-slate-100 w-24" />
-              <div className="h-8 rounded-xl bg-slate-100 w-3/4" />
-              <div className="h-4 rounded bg-slate-100 w-full" />
-              <div className="h-4 rounded bg-slate-100 w-2/3" />
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                {[...Array(4)].map((_, i) => <div key={i} className="h-20 rounded-2xl bg-slate-100" />)}
+            <div className="md:col-span-7 space-y-3 pt-1">
+              <div className="h-4 rounded-md bg-slate-100 w-24" />
+              <div className="h-6 rounded-md bg-slate-100 w-3/4" />
+              <div className="h-4 rounded-md bg-slate-100 w-full" />
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {[...Array(4)].map((_, i) => <div key={i} className="h-14 rounded-xl bg-slate-100" />)}
               </div>
             </div>
           </div>
         ) : !product ? (
           /* Not found */
-          <div className="bg-white rounded-3xl border border-slate-200 p-12 flex flex-col items-center gap-4 text-center max-w-sm mx-auto my-12">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center">
-              <svg className="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <div className="bg-white rounded-2xl p-10 flex flex-col items-center gap-3 text-center max-w-sm mx-auto my-12 shadow-xs">
+            <div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center">
+              <svg className="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 15.803 7.5 7.5 0 0016.803 15.803z" />
               </svg>
             </div>
             <div>
-              <h2 className="text-sm font-bold text-slate-900">Product not found</h2>
-              <p className="text-xs text-slate-500 mt-1">The URL may be incorrect or the product was deleted.</p>
+              <h2 className="text-sm font-medium text-slate-900">Product not found</h2>
+              <p className="text-xs text-slate-500 mt-0.5">The URL may be incorrect or the product was deleted.</p>
             </div>
-            <button onClick={() => navigate("/seller/dashboard")} className="px-5 py-2.5 text-xs font-semibold bg-slate-900 text-white rounded-full hover:bg-black transition-colors cursor-pointer">
+            <button onClick={() => navigate("/seller/dashboard")} className="px-4 py-2 text-xs font-medium bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer">
               Back to Dashboard
             </button>
           </div>

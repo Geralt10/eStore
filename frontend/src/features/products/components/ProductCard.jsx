@@ -82,11 +82,11 @@ export default function ProductCard({ product }) {
   return (
     <Link
       to={`/product/${product._id}`}
-      className="group flex flex-col bg-white rounded-2xl p-2.5 border border-slate-200/70 hover:border-slate-300 hover:shadow-sm transition-all duration-200"
+      className="group flex flex-col bg-transparent transition-all duration-300"
     >
       {/* Photo Container with Slider */}
       <div
-        className="relative w-full aspect-[3/4] rounded-xl bg-slate-100 overflow-hidden mb-3 select-none group/slider"
+        className="relative w-full aspect-[3/4] rounded-sm bg-slate-100/90 overflow-hidden mb-2.5 select-none group/slider"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -101,12 +101,12 @@ export default function ProductCard({ product }) {
           {displayImages.map((img, index) => (
             <div
               key={index}
-              className="min-w-full w-full h-full shrink-0 flex items-center justify-center bg-slate-100 overflow-hidden"
+              className="min-w-full w-full h-full shrink-0 flex items-center justify-center bg-slate-100/90 overflow-hidden"
             >
               <img
                 src={img.url || defaultImage}
                 alt={img.name || `${product.title} - image ${index + 1}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out pointer-events-none"
                 loading="lazy"
                 draggable={false}
               />
@@ -122,7 +122,7 @@ export default function ProductCard({ product }) {
               type="button"
               onClick={prevImage}
               aria-label="Previous image"
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-md backdrop-blur-xs transition-all opacity-0 group-hover/slider:opacity-100 hover:scale-110 active:scale-95 z-10 cursor-pointer"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center shadow-xs backdrop-blur-md transition-all opacity-0 group-hover/slider:opacity-100 hover:scale-105 active:scale-95 z-10 cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +130,7 @@ export default function ProductCard({ product }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2.5}
+                strokeWidth={2}
               >
                 <path
                   strokeLinecap="round"
@@ -145,7 +145,7 @@ export default function ProductCard({ product }) {
               type="button"
               onClick={nextImage}
               aria-label="Next image"
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-md backdrop-blur-xs transition-all opacity-0 group-hover/slider:opacity-100 hover:scale-110 active:scale-95 z-10 cursor-pointer"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center shadow-xs backdrop-blur-md transition-all opacity-0 group-hover/slider:opacity-100 hover:scale-105 active:scale-95 z-10 cursor-pointer"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +153,7 @@ export default function ProductCard({ product }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2.5}
+                strokeWidth={2}
               >
                 <path
                   strokeLinecap="round"
@@ -164,16 +164,16 @@ export default function ProductCard({ product }) {
             </button>
 
             {/* Indicator Dots */}
-            <div className="absolute bottom-2 inset-x-0 flex items-center justify-center gap-1.5 z-10 pointer-events-auto">
+            <div className="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5 z-10 pointer-events-auto">
               {displayImages.map((_, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={(e) => handleDotClick(e, i)}
-                  className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                  className={`h-1 rounded-full transition-all duration-200 cursor-pointer ${
                     currentIndex === i
-                      ? "w-4 bg-white shadow-xs"
-                      : "w-1.5 bg-white/60 hover:bg-white/90"
+                      ? "w-3.5 bg-white shadow-xs"
+                      : "w-1 bg-white/60 hover:bg-white/90"
                   }`}
                   aria-label={`Go to image ${i + 1}`}
                 />
@@ -181,7 +181,7 @@ export default function ProductCard({ product }) {
             </div>
 
             {/* Slide Count Badge */}
-            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md z-10">
+            <span className="absolute top-2.5 right-2.5 bg-black/40 backdrop-blur-md text-white text-[10px] font-medium px-2 py-0.5 rounded-full z-10">
               {currentIndex + 1}/{displayImages.length}
             </span>
           </>
@@ -189,16 +189,25 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Card Content */}
-      <div className="px-1 pb-1 space-y-1">
-        <h2 className="font-serif text-sm sm:text-base font-normal text-slate-900 line-clamp-1 group-hover:text-slate-700 transition-colors">
+      <div className="px-0.5 space-y-1">
+        <h3 className="font-sans text-xs sm:text-sm font-normal text-slate-800 line-clamp-1 group-hover:text-slate-950 transition-colors leading-snug">
           {product.title}
-        </h2>
+        </h3>
         <div className="flex items-center justify-between pt-0.5">
-          <span className="text-xs font-semibold tracking-wider text-slate-800 uppercase">
+          <span className="font-sans text-xs sm:text-sm font-medium text-slate-900">
             {formatPrice(product.price)}
           </span>
-          <span className="text-[10px] font-semibold tracking-widest uppercase text-slate-400 group-hover:text-slate-900 transition-colors">
-            View &rarr;
+          <span className="font-sans text-[11px] font-normal text-slate-400 group-hover:text-slate-700 transition-colors inline-flex items-center gap-0.5">
+            View
+            <svg
+              className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.8}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
           </span>
         </div>
       </div>

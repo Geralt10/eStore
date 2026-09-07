@@ -3,26 +3,26 @@ import { Link } from "react-router";
 
 export default function SellerHeader({ product }) {
   return (
-    <header className="sticky top-0 z-50 h-16 flex items-center bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 h-14 flex items-center bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-xs">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 w-full flex items-center justify-between gap-4">
 
         {/* Breadcrumb */}
-        <div className="flex items-center gap-1.5 min-w-0 text-sm">
-          <Link to="/seller/dashboard" className="font-serif text-lg font-semibold text-slate-900 hover:opacity-70 transition-opacity shrink-0">
+        <div className="flex items-center gap-1.5 min-w-0 text-xs">
+          <Link to="/seller/dashboard" className="font-sans text-sm font-medium text-slate-900 hover:opacity-70 transition-opacity shrink-0">
             eStore
           </Link>
           <span className="text-slate-300 hidden sm:block">›</span>
-          <Link to="/seller/dashboard" className="text-slate-500 hover:text-slate-800 font-medium transition-colors hidden sm:block shrink-0">
+          <Link to="/seller/dashboard" className="text-slate-500 hover:text-slate-800 font-normal transition-colors hidden sm:block shrink-0">
             Seller Portal
           </Link>
           <span className="text-slate-300 hidden sm:block">›</span>
-          <Link to="/seller/dashboard" className="text-slate-500 hover:text-slate-800 font-medium transition-colors hidden sm:block shrink-0">
+          <Link to="/seller/dashboard" className="text-slate-500 hover:text-slate-800 font-normal transition-colors hidden sm:block shrink-0">
             Inventory
           </Link>
           {product && (
             <>
               <span className="text-slate-300 hidden sm:block">›</span>
-              <span className="text-slate-800 font-semibold truncate max-w-[180px] hidden sm:block">{product.title}</span>
+              <span className="text-slate-800 font-medium truncate max-w-[180px] hidden sm:block">{product.title}</span>
             </>
           )}
         </div>
@@ -31,7 +31,7 @@ export default function SellerHeader({ product }) {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/seller/dashboard"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 text-xs font-normal hover:bg-slate-50 transition-colors"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
@@ -43,7 +43,7 @@ export default function SellerHeader({ product }) {
               to={`/product/${product._id || product.id}`}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-semibold hover:bg-black transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition-colors shadow-xs"
             >
               Live Preview
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

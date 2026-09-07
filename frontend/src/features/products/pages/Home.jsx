@@ -40,7 +40,7 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="animate-pulse space-y-2.5">
-                <div className="w-full aspect-[3/4] bg-slate-200/70 rounded-2xl" />
+                <div className="w-full aspect-[3/4] bg-slate-200/70 rounded-sm" />
                 <div className="h-4 bg-slate-200/70 rounded-md w-3/4" />
                 <div className="h-3.5 bg-slate-200/70 rounded-md w-1/3" />
               </div>
@@ -52,7 +52,7 @@ export default function Home() {
             <p className="text-sm text-slate-600">Failed to load collection</p>
             <button
               onClick={() => handleGetAllProducts()}
-              className="mt-3 px-4 py-1.5 text-xs font-semibold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+              className="mt-3 px-4 py-1.5 text-xs font-semibold bg-slate-900 text-white rounded-sm hover:bg-slate-800 transition-colors cursor-pointer"
             >
               Retry
             </button>

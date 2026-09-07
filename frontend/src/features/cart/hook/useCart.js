@@ -13,7 +13,7 @@ export const useCart = () => {
             }
             return response;
         } catch (error) {
-            console.log(error);
+            console.log(error); 
             throw error;
         }
     };
@@ -26,10 +26,10 @@ export const useCart = () => {
             }
             return response;
         } catch (error) {
-            console.log(error);
+            console.log("err",error);
             throw error;
         }
     };
 
     return { handleAddToCart, handleGetCart };
-};
+};

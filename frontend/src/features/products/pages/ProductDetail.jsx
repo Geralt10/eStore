@@ -218,288 +218,286 @@ export default function ProductDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans text-slate-900">
+    <div className="min-h-screen bg-[#fafbfc] flex flex-col font-sans text-slate-900">
       <Navbar />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        <div className="mb-3">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 py-2.5 sm:py-6">
+        <div className="mb-2 sm:mb-4">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-normal text-slate-400 hover:text-slate-800 transition-colors"
           >
             ← Back to catalog
           </Link>
         </div>
 
         {loading ? (
-          <div className="bg-white rounded-2xl p-6 border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse">
-            <div className="h-[380px] bg-slate-200/70 rounded-xl w-full" />
-            <div className="space-y-4">
-              <div className="h-6 bg-slate-200/70 rounded w-3/4" />
-              <div className="h-5 bg-slate-200/70 rounded w-1/4" />
-              <div className="h-16 bg-slate-200/70 rounded w-full" />
-              <div className="h-10 bg-slate-200/70 rounded w-full" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 animate-pulse">
+            <div className="md:col-span-7 flex flex-col-reverse sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-start w-full">
+              <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-14 shrink-0 overflow-hidden">
+                <div className="w-11 h-14 sm:w-14 sm:h-18 bg-slate-100 rounded-sm shrink-0" />
+                <div className="w-11 h-14 sm:w-14 sm:h-18 bg-slate-100 rounded-sm shrink-0" />
+                <div className="w-11 h-14 sm:w-14 sm:h-18 bg-slate-100 rounded-sm shrink-0" />
+              </div>
+              <div className="w-full aspect-square sm:aspect-auto sm:flex-1 sm:h-[420px] bg-slate-100 rounded-sm" />
+            </div>
+            <div className="md:col-span-5 space-y-2.5 sm:space-y-3 pt-1">
+              <div className="h-5 bg-slate-100 rounded-sm w-3/4" />
+              <div className="h-3.5 bg-slate-100 rounded-sm w-1/4" />
+              <div className="h-10 bg-slate-100 rounded-sm w-full" />
+              <div className="h-8 bg-slate-100 rounded-sm w-full" />
             </div>
           </div>
         ) : !product ? (
-          <div className="py-16 text-center bg-white rounded-2xl border border-slate-200/80 max-w-md mx-auto p-6">
-            <p className="text-sm font-semibold text-slate-700">Product not found</p>
+          <div className="py-14 text-center max-w-md mx-auto p-4">
+            <p className="text-sm font-normal text-slate-600">Product not found</p>
             <button
               onClick={() => navigate("/")}
-              className="mt-3 px-4 py-1.5 text-xs font-semibold bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+              className="mt-3 px-3.5 py-1.5 text-xs font-medium bg-slate-900 text-white rounded-md hover:bg-slate-800 transition-colors cursor-pointer"
             >
               Return Home
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-start">
 
-              {/* Left: Images */}
-              <div className="md:col-span-6 flex flex-col gap-2.5">
-                {/* Main image — swipeable with sliding carousel */}
+            {/* Left: Gallery (Horizontal on mobile, vertical on sm+) */}
+            <div className="md:col-span-7 flex flex-col-reverse sm:flex-row gap-2.5 sm:gap-3 items-stretch sm:items-start w-full">
+              {/* Thumbnails list */}
+              {displayImages.length > 1 && (
+                <div className="flex flex-row sm:flex-col gap-2 shrink-0 max-w-full sm:max-w-none overflow-x-auto sm:overflow-y-auto sm:max-h-[380px] md:max-h-[420px] scrollbar-none py-0.5 w-full sm:w-auto">
+                  {displayImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedImage(idx)}
+                      className={`relative w-11 h-14 sm:w-14 sm:h-18 rounded-sm overflow-hidden bg-slate-100 shrink-0 transition-all cursor-pointer ${
+                        selectedImage === idx
+                          ? "ring-1.5 ring-slate-900 opacity-100"
+                          : "opacity-60 hover:opacity-100"
+                      }`}
+                    >
+                      <img src={img?.url} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Main image — swipeable with sliding carousel */}
+              <div
+                className={`w-full aspect-square sm:aspect-auto sm:flex-1 sm:h-[420px] rounded-sm bg-slate-100/90 overflow-hidden relative group/img select-none ${
+                  isDragging ? "cursor-grabbing" : displayImages.length > 1 ? "cursor-grab" : ""
+                }`}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                onMouseLeave={onMouseLeave}
+              >
+                {/* Sliding Track */}
                 <div
-                  className={`w-full h-[320px] sm:h-[400px] lg:h-[430px] rounded-xl bg-slate-100 overflow-hidden border border-slate-200/60 relative group/img select-none ${
-                    isDragging ? "cursor-grabbing" : displayImages.length > 1 ? "cursor-grab" : ""
-                  }`}
-                  onTouchStart={onTouchStart}
-                  onTouchMove={onTouchMove}
-                  onTouchEnd={onTouchEnd}
-                  onMouseDown={onMouseDown}
-                  onMouseMove={onMouseMove}
-                  onMouseUp={onMouseUp}
-                  onMouseLeave={onMouseLeave}
+                  className="flex h-full w-full transition-transform duration-300 ease-out"
+                  style={{
+                    transform: `translateX(-${selectedImage * 100}%)`,
+                  }}
                 >
-                  {/* Sliding Track */}
-                  <div
-                    className="flex h-full w-full transition-transform duration-300 ease-out"
-                    style={{
-                      transform: `translateX(-${selectedImage * 100}%)`,
-                    }}
-                  >
-                    {displayImages.map((img, index) => (
-                      <div
-                        key={index}
-                        className="min-w-full w-full h-full shrink-0 flex items-center justify-center bg-slate-100 overflow-hidden"
-                      >
-                        <img
-                          src={img?.url || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80"}
-                          alt={`${product.title} - ${index + 1}`}
-                          className="w-full h-full object-cover pointer-events-none"
-                          draggable={false}
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Variant image badge */}
-                  {variantImages.length > 0 && (
-                    <span className="absolute top-2.5 left-2.5 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2.5 py-1 rounded-md z-10">
-                      Variant Photo
-                    </span>
-                  )}
-
-                  {/* Image Counter Badge */}
-                  {displayImages.length > 1 && (
-                    <span className="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-md z-10">
-                      {selectedImage + 1}/{displayImages.length}
-                    </span>
-                  )}
-
-                  {/* Arrows — show only when multiple images */}
-                  {displayImages.length > 1 && (
-                    <>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          prevImage();
-                        }}
-                        aria-label="Previous image"
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-md opacity-0 group-hover/img:opacity-100 hover:scale-105 active:scale-95 transition-all z-10 cursor-pointer"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          nextImage();
-                        }}
-                        aria-label="Next image"
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-md opacity-0 group-hover/img:opacity-100 hover:scale-105 active:scale-95 transition-all z-10 cursor-pointer"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
-                      </button>
-
-                      {/* Dot indicators */}
-                      <div className="absolute bottom-2.5 inset-x-0 flex justify-center items-center gap-1.5 z-10">
-                        {displayImages.map((_, i) => (
-                          <button
-                            key={i}
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedImage(i);
-                            }}
-                            aria-label={`Slide ${i + 1}`}
-                            className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                              selectedImage === i ? "w-4 bg-white shadow-xs" : "w-1.5 bg-white/60 hover:bg-white/90"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                {/* Thumbnails */}
-                {displayImages.length > 1 && (
-                  <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                    {displayImages.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedImage(idx)}
-                        className={`relative w-14 h-16 rounded-lg overflow-hidden bg-slate-100 shrink-0 border-2 transition-all cursor-pointer ${
-                          selectedImage === idx
-                            ? "border-slate-900 opacity-100"
-                            : "border-transparent opacity-55 hover:opacity-90"
-                        }`}
-                      >
-                        <img src={img?.url} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Right: Details */}
-              <div className="md:col-span-6 flex flex-col space-y-5 lg:pl-4">
-
-                {/* Title & Price */}
-                <div className="space-y-2">
-                  <h1 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-normal text-slate-900 tracking-tight leading-[1.15]">
-                    {product.title}
-                  </h1>
-                  <p className="text-xs sm:text-sm font-semibold tracking-[0.18em] text-slate-800 uppercase">
-                    {displayPrice}
-                  </p>
-                </div>
-
-                {/* Variant Attribute Selectors */}
-                {hasVariants && Object.entries(attrOptions).map(([key, values]) => {
-                  const selectedVal = selectedAttrs[key];
-                  return (
-                    <div key={key} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold tracking-[0.2em] text-slate-400 uppercase">
-                          {key}
-                        </span>
-                        {selectedVal && (
-                          <span className="text-[11px] font-semibold tracking-wider text-slate-900 uppercase">
-                            {selectedVal}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {values.map((val) => {
-                          const isAvailable = variants.some((v) => {
-                            const attrs = v.attributes instanceof Map
-                              ? Object.fromEntries(v.attributes)
-                              : v.attributes || {};
-                            return String(attrs[key]) === val && Number(v.stock) > 0;
-                          });
-
-                          const isSelected = selectedVal === val;
-
-                          return (
-                            <button
-                              key={val}
-                              type="button"
-                              onClick={() => handleAttrSelect(key, val)}
-                              disabled={!isAvailable}
-                              className={`px-4 py-2 text-[11px] font-semibold tracking-[0.14em] uppercase transition-all cursor-pointer border rounded-xs ${
-                                isSelected
-                                  ? "bg-[#2b333e] text-white border-[#2b333e] shadow-xs"
-                                  : isAvailable
-                                  ? "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
-                                  : "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed line-through"
-                              }`}
-                            >
-                              {val}
-                            </button>
-                          );
-                        })}
-                      </div>
+                  {displayImages.map((img, index) => (
+                    <div
+                      key={index}
+                      className="min-w-full w-full h-full shrink-0 flex items-center justify-center bg-slate-100/90 overflow-hidden"
+                    >
+                      <img
+                        src={img?.url || "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80"}
+                        alt={`${product.title} - ${index + 1}`}
+                        className="w-full h-full object-cover pointer-events-none"
+                        draggable={false}
+                      />
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
 
-                {/* Stock status */}
-                {hasVariants && (
-                  <div className="pt-1">
-                    {stockCount > 10 ? (
-                      <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-emerald-600">
-                        {stockCount} in stock
-                      </span>
-                    ) : stockCount > 0 ? (
-                      <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-amber-600">
-                        Only {stockCount} left in stock
-                      </span>
-                    ) : (
-                      <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-red-500">
-                        Out of stock
-                      </span>
-                    )}
-                  </div>
+                {/* Variant image badge */}
+                {variantImages.length > 0 && (
+                  <span className="absolute top-2 left-2 bg-black/40 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-normal px-2 py-0.5 rounded-full z-10">
+                    Variant Photo
+                  </span>
                 )}
 
-                {/* Description / Details */}
-                <div className="space-y-1.5 pt-1">
-                  <span className="text-[10px] font-semibold tracking-[0.2em] text-slate-400 uppercase block">
-                    Tag / Details
+                {/* Image Counter Badge */}
+                {displayImages.length > 1 && (
+                  <span className="absolute top-2 right-2 bg-black/40 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-normal px-2 py-0.5 rounded-full z-10">
+                    {selectedImage + 1}/{displayImages.length}
                   </span>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                    {product.description}
-                  </p>
-                </div>
+                )}
 
-                {/* Action Buttons */}
-                <div className="pt-3 flex flex-col gap-2.5">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={stockCount === 0}
-                    className="w-full py-3.5 px-6 text-xs font-semibold tracking-[0.22em] uppercase bg-[#2b333e] hover:bg-black text-white transition-all shadow-xs cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    Add to Cart
-                  </button>
-                  <button
-                    onClick={handleBuyNow}
-                    disabled={stockCount === 0}
-                    className="w-full py-3.5 px-6 text-xs font-semibold tracking-[0.22em] uppercase bg-transparent hover:bg-slate-100 text-slate-900 border border-slate-200 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    Buy Now
-                  </button>
-                </div>
+                {/* Arrows — show only when multiple images */}
+                {displayImages.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevImage();
+                      }}
+                      aria-label="Previous image"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center shadow-xs backdrop-blur-md opacity-0 group-hover/img:opacity-100 hover:scale-105 active:scale-95 transition-all z-10 cursor-pointer"
+                    >
+                      <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextImage();
+                      }}
+                      aria-label="Next image"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/90 hover:bg-white text-slate-700 flex items-center justify-center shadow-xs backdrop-blur-md opacity-0 group-hover/img:opacity-100 hover:scale-105 active:scale-95 transition-all z-10 cursor-pointer"
+                    >
+                      <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                    </button>
 
-                {/* Editorial Shipping & Delivery Info */}
-                <div className="pt-4 mt-2 border-t border-slate-100 space-y-2 text-[10px] tracking-[0.15em] text-slate-400 uppercase">
-                  <div className="flex items-center justify-between">
-                    <span>Shipping</span>
-                    <span className="text-slate-600 font-medium">Complimentary over INR 10,000</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Returns</span>
-                    <span className="text-slate-600 font-medium">Within 14 days of delivery</span>
-                  </div>
-                </div>
+                    {/* Dot indicators */}
+                    <div className="absolute bottom-2 inset-x-0 flex justify-center items-center gap-1 z-10">
+                      {displayImages.map((_, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedImage(i);
+                          }}
+                          aria-label={`Slide ${i + 1}`}
+                          className={`h-1 rounded-full transition-all cursor-pointer ${
+                            selectedImage === i ? "w-3 sm:w-3.5 bg-white shadow-xs" : "w-1 bg-white/60 hover:bg-white/90"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Details */}
+            <div className="md:col-span-5 flex flex-col space-y-2.5 sm:space-y-4">
+
+              {/* Title & Price */}
+              <div className="space-y-0.5 sm:space-y-1">
+                <h1 className="font-sans text-base sm:text-xl font-medium text-slate-900 tracking-tight leading-snug">
+                  {product.title}
+                </h1>
+                <p className="text-xs sm:text-sm font-normal text-slate-500">
+                  {displayPrice}
+                </p>
               </div>
 
+              {/* Variant Attribute Selectors */}
+              {hasVariants && Object.entries(attrOptions).map(([key, values]) => {
+                const selectedVal = selectedAttrs[key];
+                return (
+                  <div key={key} className="space-y-1 sm:space-y-1.5">
+                    <span className="text-[11px] sm:text-xs font-normal text-slate-500 capitalize block">
+                      {key}
+                    </span>
+                    <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+                      {values.map((val) => {
+                        const isAvailable = variants.some((v) => {
+                          const attrs = v.attributes instanceof Map
+                            ? Object.fromEntries(v.attributes)
+                            : v.attributes || {};
+                          return String(attrs[key]) === val && Number(v.stock) > 0;
+                        });
+
+                        const isSelected = selectedVal === val;
+
+                        return (
+                          <button
+                            key={val}
+                            type="button"
+                            onClick={() => handleAttrSelect(key, val)}
+                            disabled={!isAvailable}
+                            className={`px-2.5 py-1 text-[11px] sm:text-xs font-normal transition-all cursor-pointer rounded-md ${
+                              isSelected
+                                ? "bg-slate-900 text-white shadow-xs"
+                                : isAvailable
+                                ? "bg-slate-100 text-slate-700 hover:bg-slate-200/70"
+                                : "bg-slate-50 text-slate-300 cursor-not-allowed line-through"
+                            }`}
+                          >
+                            {val}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Stock status */}
+              {hasVariants && (
+                <div>
+                  {stockCount > 10 ? (
+                    <span className="text-[10px] sm:text-[11px] font-normal text-emerald-600">
+                      {stockCount} in stock
+                    </span>
+                  ) : stockCount > 0 ? (
+                    <span className="text-[10px] sm:text-[11px] font-normal text-amber-600">
+                      Only {stockCount} left in stock
+                    </span>
+                  ) : (
+                    <span className="text-[10px] sm:text-[11px] font-normal text-rose-500">
+                      Out of stock
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Description / Details */}
+              <div className="space-y-0.5 sm:space-y-1 pt-1 border-t border-slate-100">
+                <span className="text-[11px] sm:text-xs font-medium text-slate-900 block">
+                  Description
+                </span>
+                <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed font-normal">
+                  {product.description}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-0.5 sm:pt-1 flex items-center gap-2">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={stockCount === 0}
+                  className="flex-1 py-2 sm:py-2.5 px-3 sm:px-4 text-[11px] sm:text-xs font-medium rounded-lg bg-slate-900 hover:bg-slate-800 text-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Add to Cart
+                </button>
+                <button
+                  onClick={handleBuyNow}
+                  disabled={stockCount === 0}
+                  className="flex-1 py-2 sm:py-2.5 px-3 sm:px-4 text-[11px] sm:text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200/80 text-slate-900 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Buy Now
+                </button>
+              </div>
+
+              {/* Editorial Shipping & Delivery Info */}
+              <div className="pt-2 sm:pt-3 border-t border-slate-100 space-y-1 sm:space-y-1.5 text-[10px] sm:text-[11px] font-normal text-slate-400">
+                <div className="flex items-center justify-between">
+                  <span>Shipping</span>
+                  <span className="text-slate-700">Complimentary over INR 10,000</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Returns</span>
+                  <span className="text-slate-700">Within 14 days of delivery</span>
+                </div>
+              </div>
             </div>
+
           </div>
         )}
       </main>
