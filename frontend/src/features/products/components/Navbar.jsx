@@ -1,13 +1,17 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { useAuth } from "../../auth/hooks/useAuth";
+ 
 
 export default function Navbar() {
   const user = useSelector((state) => state.auth.user);
   const { handleLogout } = useAuth();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  
+  const items = useSelector((state)=>state.cart.items);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -57,11 +61,12 @@ export default function Navbar() {
               type="button"
               className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-950 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-slate-100"
               aria-label="Cart"
+              onClick={()=>navigate("/cart")}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>
-              <span>Cart (0)</span>
+              <span>Cart ({items.length})</span>
             </button>
 
             {/* Auth Actions */}

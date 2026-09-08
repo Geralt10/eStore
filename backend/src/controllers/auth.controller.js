@@ -126,4 +126,5 @@ export async function logoutController(req, res) {
         res.status(500).json({ message: error.message || "Server Error" });
     }
 }
-
+
+

@@ -22,3 +22,30 @@ export const getCart = async() => {
         throw error
     }
 }
+
+export const removeFromCart = async({productId,variantId}) => {
+    try {
+        const response = await api.delete(`/${productId}/${variantId}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+export const incrementQuantityApi = async({productId,variantId}) => {
+    try {
+        const response = await api.post(`/quantity/increment/${productId}/${variantId}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
+export const decrementQuantityApi = async({productId,variantId}) => {
+    try {
+        const response = await api.post(`/quantity/decrement/${productId}/${variantId}`)
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}

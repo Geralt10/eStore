@@ -96,3 +96,186 @@ export const getCart = async(req,res)=>{
         res.status(500).json({message:error.message});
     }
 }
+
+
+export const incrementQuantity = async (req, res) => {
+    try {
+        const { productId, variantId } = req.params;
+
+        const cart = await cartModel.findOne({
+            user: req.user._id
+        });
+
+        if (!cart) {
+            return res.status(404).json({
+                message: "Cart not found",
+                success: false
+            });
+        }
+
+        const existingItem = cart.items.find(
+            (item) =>
+                item.product.toString() === productId &&
+                (
+                    variantId
+                        ? item.variant?.toString() === variantId
+                        : !item.variant
+                )
+        );
+
+        if (!existingItem) {
+            return res.status(404).json({
+                message: "Item not found in cart",
+                success: false
+            });
+        }
+
+        const stock = await stockOfVariant(productId, variantId);
+
+        if (existingItem.quantity >= stock) {
+            return res.status(400).json({
+                message: `Only ${stock} items are available in stock.`,
+                success: false
+            });
+        }
+
+        existingItem.quantity += 1;
+
+        await cart.save();
+
+        return res.status(200).json({
+            message: "Quantity incremented successfully",
+            success: true,
+            cart
+        });
+
+    } catch (error) {
+        console.error("Increment quantity error:", error);
+
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+};
+
+export const decrementQuantity = async (req, res) => {
+    try {
+        const { productId, variantId } = req.params;
+
+        const cart = await cartModel.findOne({
+            user: req.user._id
+        });
+
+        if (!cart) {
+            return res.status(404).json({
+                message: "Cart not found",
+                success: false
+            });
+        }
+
+        const existingItem = cart.items.find(
+            (item) =>
+                item.product.toString() === productId &&
+                (
+                    variantId
+                        ? item.variant?.toString() === variantId
+                        : !item.variant
+                )
+        );
+
+        if (!existingItem) {
+            return res.status(404).json({
+                message: "Item not found in cart",
+                success: false
+            });
+        }
+
+        if (existingItem.quantity <= 1) {
+            cart.items = cart.items.filter(
+                (item) => item._id.toString() !== existingItem._id.toString()
+            );
+
+            await cart.save();
+
+            return res.status(200).json({
+                message: "Item removed from cart",
+                success: true,
+                cart
+            });
+        }
+
+        existingItem.quantity -= 1;
+
+        await cart.save();
+
+        return res.status(200).json({
+            message: "Quantity decremented successfully",
+            success: true,
+            cart
+        });
+
+    } catch (error) {
+        console.error("Decrement quantity error:", error);
+
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+};
+
+
+export const removeFromCart = async (req, res) => {
+    try {
+        const { productId, variantId } = req.params;
+
+        const cart = await cartModel.findOne({
+            user: req.user._id
+        });
+
+        if (!cart) {
+            return res.status(404).json({
+                message: "Cart not found",
+                success: false
+            });
+        }
+
+        const existingItem = cart.items.find(
+            (item) =>
+                item.product.toString() === productId &&
+                (
+                    variantId
+                        ? item.variant?.toString() === variantId
+                        : !item.variant
+                )
+        );
+
+        if (!existingItem) {
+            return res.status(404).json({
+                message: "Item not found in cart",
+                success: false
+            });
+        }
+
+        cart.items = cart.items.filter(
+            (item) => item._id.toString() !== existingItem._id.toString()
+        );
+
+        await cart.save();
+
+        return res.status(200).json({
+            message: "Item removed from cart",
+            success: true,
+            cart
+        });
+
+    } catch (error) {
+        console.error("Remove from cart error:", error);
+
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false
+        });
+    }
+};
