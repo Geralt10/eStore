@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { useProduct } from "../hooks/useProduct";
-import { useProductFilter } from "../hooks/useProductFilter";
 import SellerProductCard from "../components/SellerProductCard";
 import DashboardFilterBar from "../components/DashboardFilterBar";
+import Navbar from "../components/Navbar";
 
 const CURRENCY_SYMBOLS = {
   INR: "₹",
@@ -19,16 +19,7 @@ export default function Dashboard() {
   const loading = useSelector((state) => state.product.loading);
   const navigate = useNavigate();
   const { handleGetSellerProduct } = useProduct();
-
-  const {
-    searchTerm,
-    setSearchTerm,
-    sortBy,
-    setSortBy,
-    viewMode,
-    setViewMode,
-    filteredProducts,
-  } = useProductFilter(products);
+  const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
     handleGetSellerProduct();
@@ -36,38 +27,13 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[#fafbfc] text-slate-900 pb-20 font-sans">
-      {/* Top Header Bar */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 sm:px-12 py-3.5 transition-all">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Link
-              to="/"
-              className="text-base font-semibold tracking-tight text-slate-900 hover:opacity-80 transition-opacity"
-            >
-              eStore
-            </Link>
-            <span className="text-slate-300 font-light">/</span>
-            <span className="text-xs text-slate-500 font-medium">Seller Portal</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Store Active
-            </span>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Main Content Area */}
       <main className="max-w-7xl mx-auto px-6 sm:px-12 pt-8 space-y-6">
         {/* Sleek Unified Toolbar (Title, Count, Search, Sort, View, Add Button) */}
         <DashboardFilterBar
-          totalCount={filteredProducts.length}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
+          totalCount={products.length}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
         />
@@ -90,7 +56,7 @@ export default function Dashboard() {
         )}
 
         {/* Empty State */}
-        {!loading && filteredProducts.length === 0 && (
+        {!loading && products.length === 0 && (
           <div className="bg-white rounded-sm border border-slate-200/80 p-12 text-center max-w-lg mx-auto space-y-4 my-8">
             <div className="w-14 h-14 rounded-sm bg-slate-50 border border-slate-200/70 flex items-center justify-center mx-auto text-slate-400 shadow-xs">
               <svg
@@ -110,28 +76,17 @@ export default function Dashboard() {
             </div>
             <div>
               <h3 className="text-base font-semibold text-slate-900">
-                {searchTerm ? "No matching products found" : "No products listed yet"}
+                No products listed yet
               </h3>
               <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
-                {searchTerm
-                  ? "Try searching with a different term or clear the filter."
-                  : "Start showcasing your catalog to customers by creating your first product."}
+                Start showcasing your catalog to customers by creating your first product.
               </p>
             </div>
             <div className="pt-2">
-              {searchTerm ? (
-                <button
-                  type="button"
-                  onClick={() => setSearchTerm("")}
-                  className="px-4 py-2 rounded-sm bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium transition-colors cursor-pointer"
-                >
-                  Clear Search
-                </button>
-              ) : (
-                <Link
-                  to="/seller/create"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-slate-900 hover:bg-black text-white text-xs font-medium shadow-md transition-all active:scale-[0.98]"
-                >
+              <Link
+                to="/seller/create"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-sm bg-slate-900 hover:bg-black text-white text-xs font-medium shadow-md transition-all active:scale-[0.98]"
+              >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-4 h-4"
@@ -146,18 +101,17 @@ export default function Dashboard() {
                       d="M12 4.5v15m7.5-7.5h-15"
                     />
                   </svg>
-                  <span>Create Your First Product</span>
-                </Link>
-              )}
+                <span>Create Your First Product</span>
+              </Link>
             </div>
           </div>
         )}
 
         {/* Product Cards (Grid Mode) */}
-        {!loading && filteredProducts.length > 0 && viewMode === "grid" && (
+        {!loading && products.length > 0 && viewMode === "grid" && (
           <div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-1">
-            {filteredProducts.map((product) => {
+            {products.map((product) => {
               const productId = product._id || product.id;
               return (
                 <SellerProductCard
@@ -173,10 +127,10 @@ export default function Dashboard() {
         )}
 
         {/* Product List Mode (Compact Table / Row Style) */}
-        {!loading && filteredProducts.length > 0 && viewMode === "list" && (
+        {!loading && products.length > 0 && viewMode === "list" && (
           <div className="bg-white rounded-sm shadow-xs overflow-hidden pt-1">
             <div className="divide-y divide-slate-100">
-              {filteredProducts.map((product) => {
+              {products.map((product) => {
                 const productId = product._id || product.id;
                 const images = product.image || product.images || [];
                 const currentImg = images[0];

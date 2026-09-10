@@ -4,10 +4,11 @@ import {
     getAllProducts,
     getProductById,
     createVariant,
-    updateVariantStock
+    updateVariantStock,
+    getSuggestedProducts,
 } from "../services/product.api";
 import { useDispatch } from "react-redux";
-import { setAllProducts, setSellerProduct, setLoading, setError } from "../state/product.slice";
+import { setAllProducts, setSellerProduct, setLoading, setError, setSuggestedProducts } from "../state/product.slice";
 
 export function useProduct() {
     const dispatch = useDispatch();
@@ -97,6 +98,20 @@ export function useProduct() {
         }
     }
 
+    async function handleGetSuggestedProducts(productId){
+        try {
+            dispatch(setLoading(true));
+            dispatch(setError(null));
+            const data = await getSuggestedProducts(productId);
+            dispatch(setSuggestedProducts(data.products));
+        } catch (error) {
+            const errorMsg = error.response?.data?.message || error.message || "Failed to fetch suggested products";
+            dispatch(setError(errorMsg));
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+
 
     return {
         handleCreateProduct,
@@ -104,6 +119,7 @@ export function useProduct() {
         handleGetSellerProduct,
         handleGetProduct,
         handleCreateVariant,
-        handleUpdateVariantStock
+        handleUpdateVariantStock,
+        handleGetSuggestedProducts
     };
-}
+}

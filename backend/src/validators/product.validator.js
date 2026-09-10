@@ -20,3 +20,4 @@ export const createProductValidator = [
         body("priceCurrency").optional().isIn(["USD","EUR","GBP","JPY","INR"]).withMessage("Invalid currency"),
         validateRequeset
 ];
+

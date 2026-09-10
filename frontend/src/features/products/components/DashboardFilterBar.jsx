@@ -1,12 +1,7 @@
-import React from "react";
 import { Link } from "react-router";
 
 export default function DashboardFilterBar({
   totalCount = 0,
-  searchTerm,
-  onSearchChange,
-  sortBy,
-  onSortChange,
   viewMode,
   onViewModeChange,
 }) {
@@ -22,64 +17,8 @@ export default function DashboardFilterBar({
         </span>
       </div>
 
-      {/* Right Controls: Search, Sort, View Toggle & Add Button */}
+      {/* Right Controls: View Toggle & Add Button */}
       <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
-        {/* Search Box */}
-        <div className="relative flex-1 sm:w-64 sm:flex-initial">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 pointer-events-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3.5 h-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-              />
-            </svg>
-          </span>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search products..."
-            className="w-full pl-8 pr-3 py-2 bg-white rounded-xl border border-slate-200 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 text-xs text-slate-900 placeholder:text-slate-400 shadow-2xs transition-all outline-none"
-          />
-        </div>
-
-        {/* Sort Select */}
-        <div className="relative">
-          <select
-            value={sortBy}
-            onChange={(e) => onSortChange(e.target.value)}
-            className="appearance-none pl-3 pr-7 py-2 bg-white rounded-xl border border-slate-200 focus:border-slate-900 text-xs text-slate-700 font-medium shadow-2xs transition-all outline-none cursor-pointer"
-          >
-            <option value="newest">Newest</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="title">A to Z</option>
-          </select>
-          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-slate-400">
-            <svg
-              className="w-3.5 h-3.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </span>
-        </div>
-
         {/* View Mode Switcher */}
         <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200/80">
           <button

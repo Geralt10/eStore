@@ -9,11 +9,12 @@ export default function Protected({children,role}){
         return <div>Loading...</div>
     }
     if(!user){
-        return <Navigate to="/" />
+        return <Navigate to="/login" />
     }
     if(role && user.role !== role){
-        return <Navigate to="/" />
+        return <Navigate to="/login" />
     }
+    
     return (
         <>
         {children}

@@ -1,7 +1,6 @@
+import mongoose from "mongoose";
 import productModel from "../models/product.model.js";
 import { uploadFile } from "../services/storage.service.js";
-
-
 
 export async function createProduct(req,res) {
     
@@ -182,3 +181,69 @@ export async function updateVariantStock(req, res) {
 }
 
 
+export async function getSuggestedProducts(req, res) {
+    try {
+        const { id } = req.params;
+
+        const product = await productModel.findById(id);
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+
+        let category = null;
+        if (product.varients && product.varients.length > 0) {
+            const firstVariant = product.varients[0];
+            if (firstVariant.attributes) {
+                category = typeof firstVariant.attributes.get === "function"
+                    ? firstVariant.attributes.get("category")
+                    : firstVariant.attributes.category;
+            }
+        }
+
+        let suggestedProducts = [];
+
+        if (category) {
+            suggestedProducts = await productModel
+                .find({
+                    _id: { $ne: id },
+                    "varients.attributes.category": category,
+                })
+                .limit(4);
+        }
+
+        // If fewer than 4 suggested products from category, fill up with random products from DB
+        if (suggestedProducts.length < 4) {
+            const excludeIds = [
+                new mongoose.Types.ObjectId(id),
+                ...suggestedProducts.map((p) => new mongoose.Types.ObjectId(p._id)),
+            ];
+
+            const needed = 4 - suggestedProducts.length;
+
+            const randomProducts = await productModel.aggregate([
+                { $match: { _id: { $nin: excludeIds } } },
+                { $sample: { size: needed } },
+            ]);
+
+            suggestedProducts = [...suggestedProducts, ...randomProducts];
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Suggested products fetched successfully",
+            products: suggestedProducts,
+        });
+
+    } catch (error) {
+        console.error("Get suggested products error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+}

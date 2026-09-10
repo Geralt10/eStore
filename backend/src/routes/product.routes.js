@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authorize } from "../middlewares/auth.middleware.js";
-import { createProduct, getAllProducts, getProduct, getSellerProduct, addVariant, updateVariantStock } from "../controllers/product.controller.js";
+import { createProduct, getAllProducts, getProduct, getSellerProduct, addVariant, updateVariantStock,getSuggestedProducts } from "../controllers/product.controller.js";
 import multer from "multer";
 import { createProductValidator } from "../validators/product.validator.js";
 
@@ -25,5 +25,6 @@ productRouter.get("/:id",getProduct);
 productRouter.post("/:id/variant", authorize, upload.array("images", 5), addVariant);
 productRouter.patch("/:id/variant/:variantId/stock", authorize, updateVariantStock);
 
+productRouter.get("/:id/suggested",getSuggestedProducts);
 
 export default productRouter;

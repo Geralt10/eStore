@@ -65,4 +65,13 @@ export async function updateVariantStock(productId, variantId, stock) {
     }
 }
 
-
+export async function getSuggestedProducts(productId){
+    try {
+        const response = await api.get(`/product/${productId}/suggested`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
